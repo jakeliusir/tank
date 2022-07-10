@@ -15,19 +15,20 @@ public class Tank   {
     int x,y;
     Dir dir  = Dir.DOWN;
 	private  boolean moving = true;
-	TankFrame tf =null;	
+
+	GameModel gm;
 	private Random random = new Random();
 	FireStrategy fs = null;
     Group group = Group.BAD;
 	Rectangle rect  = new Rectangle();
 	
-    public Tank(int x, int y, Dir dir,Group group,TankFrame tf) {
+    public Tank(int x, int y, Dir dir,Group group,GameModel gm) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.tf =tf;
+		this.gm=gm;
 		
 		rect.x = this.x;
 		rect.y = this.y;
@@ -133,7 +134,7 @@ public class Tank   {
 //	    x+=10;
 //	    y+=10;	
 		if (!living) {
-			tf.tanks.remove(this);		
+			gm.tanks.remove(this);		
 		}
 		switch (dir) {
 		case LEFT:
