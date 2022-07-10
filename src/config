@@ -5,7 +5,9 @@ bulletSpeed=10
 gameWidth=1080
 gameHeight=720
 #FireDirStrategy
-goodFs=com.liuyanqing.tank.FourDirFireStrategy
-badFs=com.liuyanqing.tank.DefaultFireStrategy
+goodFs=com.liuyanqing.tank.strategy.FourDirFireStrategy
+badFs=com.liuyanqing.tank.strategy.DefaultFireStrategy
+#colliders
+colliders=com.liuyanqing.tank.cor.BulletTankCollider,com.liuyanqing.tank.cor.TankTankCollider
 
 

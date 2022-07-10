@@ -1,6 +1,9 @@
-package com.liuyanqing.tank;
+package com.liuyanqing.tank.strategy;
 
-
+import com.liuyanqing.tank.Audio;
+import com.liuyanqing.tank.Bullet;
+import com.liuyanqing.tank.Group;
+import com.liuyanqing.tank.Tank;
 
 public class DefaultFireStrategy implements FireStrategy {
 

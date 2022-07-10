@@ -7,7 +7,7 @@ import javax.sound.sampled.AudioFileFormat;
 
 
 
-public class Explode   {
+public class Explode extends GameObject  {
     private static final int SPEED =10;
     public static int WIDTH = ResourceMgr.exploses[1].getWidth();
     public static int HEIGHT = ResourceMgr.exploses[1].getHeight();
@@ -34,7 +34,7 @@ public class Explode   {
 	public void paint(Graphics g) {
       g.drawImage(ResourceMgr.exploses[step++], x, y,null);
       if (step>=ResourceMgr.exploses.length) {
-		gm.explodes.remove(this);
+		gm.remove(this);
 		
 		
 		
@@ -43,6 +43,9 @@ public class Explode   {
 
 
 	}
+
+
+
 
 
 

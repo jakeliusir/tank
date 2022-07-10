@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 
 
-public class Bullet {
+public class Bullet extends GameObject {
     private static final int SPEED =20;
     public static int WIDTH = ResourceMgr.bulletD.getWidth(),HEIGHT = ResourceMgr.bulletD.getHeight();
 
@@ -33,7 +33,7 @@ public class Bullet {
 		rect1.width = WIDTH;
 		rect1.height = HEIGHT;
 		
-		gm.bullets.add(this);
+		gm.add(this);
 	}
 	
 
@@ -52,7 +52,7 @@ public class Bullet {
 	public void paint(Graphics g) {
 		
 		if(!living) {
-			gm.bullets.remove(this);
+			gm.remove(this);
 		}
 //		Color color = g.getColor();
 //		g.setColor(Color.RED);
@@ -151,11 +151,11 @@ public class Bullet {
 
 
 
-public void collidewith(Tank tank) {
+public boolean collidewith(Tank tank) {
 	
 		if(this.group == tank.group) {
 			
-			return;
+			return false;
 		}
 		Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
 		Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
@@ -164,9 +164,14 @@ public void collidewith(Tank tank) {
 			this.die();
 			int ex = tank.getX()+Tank.WIDTH/2 - Explode.WIDTH/2;
 			int ey = tank.getY()+Tank.HEIGHT/2 -Explode.HEIGHT/2;
-			gm.explodes.add(new Explode(ex,ey,gm));
+			gm.add(new Explode(ex,ey,gm));
+			return true;
 		}
+		return false;
 	
 }
+
+
+
 
 }

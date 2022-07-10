@@ -1,130 +1,166 @@
 package com.liuyanqing.tank;
 
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import com.liuyanqing.tank.cor.Collider;
+import com.liuyanqing.tank.cor.TankTankCollider;
+import com.liuyanqing.tank.strategy.FireStrategy;
+import com.sun.prism.paint.Stop;
 
+public class Tank extends GameObject {
+	public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
+	private static final int SPEED = 5;
+	private boolean living = true;
+	public int x;
+	public int y;
+	public Dir dir = Dir.DOWN;
+	private boolean moving = true;
 
-
-public class Tank   {
-	public static int WIDTH = ResourceMgr.goodTankU.getWidth(),HEIGHT = ResourceMgr.goodTankU.getHeight();
-	private boolean living =true;
-	private static final int SPEED =5;
-    int x,y;
-    Dir dir  = Dir.DOWN;
-	private  boolean moving = true;
-
-	GameModel gm;
+	public GameModel gm;
 	private Random random = new Random();
 	FireStrategy fs = null;
-    Group group = Group.BAD;
-	Rectangle rect  = new Rectangle();
-	
-    public Tank(int x, int y, Dir dir,Group group,GameModel gm) {
+	public Group group = Group.BAD;
+	Rectangle rect = new Rectangle();
+	int oldx,oldy;
+
+	public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.gm=gm;
-		
+		this.gm = gm;
+
 		rect.x = this.x;
 		rect.y = this.y;
 		rect.width = WIDTH;
 		rect.height = HEIGHT;
 		if (group == Group.GOOD) {
-				String goodFs = (String)PropertyMgr.get("goodFs");	
-				try {
-				fs=(FireStrategy)Class.forName(goodFs).newInstance();
-					
-				} catch (Exception e) {
-				}
-			}else {
-				String badFs = (String)PropertyMgr.get("badFs");
-				try {
-					fs=(FireStrategy)Class.forName(badFs).newInstance();
-				} catch (Exception e) {
-					
-				}
-			} 
-	
-    }
+			String goodFs = (String) PropertyMgr.get("goodFs");
+			try {
+				fs = (FireStrategy) Class.forName(goodFs).newInstance();
+
+			} catch (Exception e) {
+			}
+		} else {
+			String badFs = (String) PropertyMgr.get("badFs");
+			try {
+				fs = (FireStrategy) Class.forName(badFs).newInstance();
+			} catch (Exception e) {
+
+			}
+		}
+
+	}
+
+	private void boundsCheck() {
+		if (this.x < 2) {
+			x = 2;
+		}
+		if (this.y < 28) {
+			y = 28;
+		}
+		if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2) {
+			x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
+		}
+		if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2) {
+			y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
+		}
+		
+//		if (moving =false) {
+//			x=oldx;
+//			y=oldy;
+//		}
+
+	}
+
+	public void die() {
+		this.living = false;
+
+	}
+
+	public void fire() {
+		fs.fire(this);
+	}
+
+	public Dir getDir() {
+		return dir;
+	}
 
 	public Group getGroup() {
 		return group;
 	}
 
-
-	public void setGroup(Group group) {
-		this.group = group;
+	public Rectangle getRect() {
+		return rect;
 	}
 
-
-	
-	public void fire() {
-		fs.fire(this);
-	}
-	
-	
-	
-    public Dir getDir() {
-		return dir;
-	}
 	public int getX() {
 		return x;
 	}
+
 	public int getY() {
 		return y;
 	}
+
 	public boolean isMoving() {
 		return moving;
 	}
+
 	private void move() {
-		// TODO Auto-generated method stub
-		if(!moving)return;
-	    switch (dir) {
-			case LEFT:
-				x-=SPEED;
-				break;
-			case RIGHT:
-				x+=SPEED;
-				break;
-			case UP:
-				y-=SPEED;
-				break;
-			case DOWN:
-				y+=SPEED;
-				break;
-	}
+		  oldx = x;
+     	  oldy = y;
+   
+		if (!moving) {
+		
+			return;
+		}
+		switch (dir) {
+		case LEFT:
+			x -= SPEED;
+			break;
+		case RIGHT:
+			x += SPEED;
+			break;
+		case UP:
+			y -= SPEED;
+			break;
+		case DOWN:
+			y += SPEED;
+			break;
+		}
 //	    randomDir();
-	    if (this.group == Group.BAD && random.nextInt(100)>95) {
+		if (this.group == Group.BAD && random.nextInt(100) > 95) {
 			this.fire();
 		}
-      if (group ==Group.BAD&& random.nextInt(100)>95) {
-        	randomDir();	
+		if (group == Group.BAD && random.nextInt(100) > 95) {
+			randomDir();
 		}
-	    boundsCheck();
-	    //update rect
-	    rect.x = this.x;
-	    rect.y =this.y;
-  }
-	private void boundsCheck() {
-		if (this.x<2) {x =2;}
-		if (this.y<28) {y=28;}
-		if (this.x>TankFrame.GAME_WIDTH-Tank.WIDTH-2) {x = TankFrame.GAME_WIDTH-Tank.WIDTH-2;}
-		if (this.y>TankFrame.GAME_HEIGHT-Tank.HEIGHT-2) {y =TankFrame.GAME_HEIGHT-Tank.HEIGHT-2;}	
+		boundsCheck();
+
+		// update rect
+		rect.x = this.x;
+		rect.y = this.y;
 		
 	}
 
-   
-	private void randomDir() {
-		
-		this.dir = Dir.values()[random.nextInt(4)];
-		
+	public int getOldx() {
+		return oldx;
 	}
 
+	public void setOldx(int oldx) {
+		this.oldx = oldx;
+	}
+
+	public int getOldy() {
+		return oldy;
+	}
+
+	public void setOldy(int oldy) {
+		this.oldy = oldy;
+	}
 
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
@@ -134,48 +170,63 @@ public class Tank   {
 //	    x+=10;
 //	    y+=10;	
 		if (!living) {
-			gm.tanks.remove(this);		
+			gm.remove(this);
 		}
 		switch (dir) {
 		case LEFT:
-			g.drawImage(this.group==Group.GOOD?ResourceMgr.goodTankL:ResourceMgr.badTankL,x,y,null);
+			g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
 			break;
 		case RIGHT:
-			g.drawImage(this.group==Group.GOOD?ResourceMgr.goodTankR:ResourceMgr.badTankR,x,y,null);
+			g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
 			break;
 		case UP:
-			g.drawImage(this.group==Group.GOOD?ResourceMgr.goodTankU:ResourceMgr.badTankU,x,y,null);
+			g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
 			break;
 		case DOWN:
-			g.drawImage(this.group==Group.GOOD?ResourceMgr.goodTankD:ResourceMgr.badTankD,x,y,null);
+			g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
 			break;
 
 		default:
 			break;
 		}
 		move();
-		}
-	
+	}
+
+	private void randomDir() {
+
+		this.dir = Dir.values()[random.nextInt(4)];
+
+	}
+
 	public void setDir(Dir dir) {
 		this.dir = dir;
 	}
-	
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 	}
-	
+
+	public void setRect(Rectangle rect) {
+		this.rect = rect;
+	}
+
 	public void setX(int x) {
 		this.x = x;
 	}
+
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	public void die() {
-		this.living =false;
+	public void stop() {
+		this.x =oldx;
+		this.y =oldy;
+//		moving = false;
+	
 		
 	}
 
-
-	
 }
