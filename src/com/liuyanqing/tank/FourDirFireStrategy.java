@@ -1,6 +1,6 @@
 package com.liuyanqing.tank;
 
-import com.liuyanqing.tank.abstractfactory.RectTank;
+
 
 public class FourDirFireStrategy implements FireStrategy {
 
@@ -22,10 +22,6 @@ public class FourDirFireStrategy implements FireStrategy {
 		
 	}
 
-	@Override
-	public void fire(RectTank rectTank) {
-		
-		
-	}
+
 
 }

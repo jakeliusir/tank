@@ -5,20 +5,21 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import com.liuyanqing.tank.abstractfactory.BaseTank;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
-public class Tank extends BaseTank {
+
+
+public class Tank   {
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth(),HEIGHT = ResourceMgr.goodTankU.getHeight();
 	private boolean living =true;
 	private static final int SPEED =5;
     int x,y;
-//    对于抽象出去的东西应当从原类里删除该变量
     Dir dir  = Dir.DOWN;
 	private  boolean moving = true;
 	TankFrame tf =null;	
 	private Random random = new Random();
 	FireStrategy fs = null;
+    Group group = Group.BAD;
+	Rectangle rect  = new Rectangle();
 	
     public Tank(int x, int y, Dir dir,Group group,TankFrame tf) {
 		super();
@@ -168,10 +169,12 @@ public class Tank extends BaseTank {
 	public void setY(int y) {
 		this.y = y;
 	}
-   @Override
+
 	public void die() {
 		this.living =false;
 		
 	}
+
+
 	
 }

@@ -5,10 +5,9 @@ import java.awt.Rectangle;
 
 import javax.sound.sampled.AudioFileFormat;
 
-import com.liuyanqing.tank.abstractfactory.BaseExplode;
 
 
-public class Explode extends BaseExplode  {
+public class Explode   {
     private static final int SPEED =10;
     public static int WIDTH = ResourceMgr.exploses[1].getWidth();
     public static int HEIGHT = ResourceMgr.exploses[1].getHeight();

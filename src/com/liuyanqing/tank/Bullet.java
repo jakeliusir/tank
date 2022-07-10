@@ -3,10 +3,9 @@ package com.liuyanqing.tank;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import com.liuyanqing.tank.abstractfactory.BaseBullet;
-import com.liuyanqing.tank.abstractfactory.BaseTank;
 
-public class Bullet extends BaseBullet {
+
+public class Bullet {
     private static final int SPEED =20;
     public static int WIDTH = ResourceMgr.bulletD.getWidth(),HEIGHT = ResourceMgr.bulletD.getHeight();
 
@@ -18,7 +17,7 @@ public class Bullet extends BaseBullet {
     private boolean living = true; 
     TankFrame tf  = null;
     
-    private Group group = Group.BAD;
+     Group group = Group.BAD;
 
     
 	
@@ -151,8 +150,8 @@ public class Bullet extends BaseBullet {
 	}
 
 
-@Override
-public void collidewith(BaseTank tank) {
+
+public void collidewith(Tank tank) {
 	
 		if(this.group == tank.group) {
 			
@@ -161,12 +160,11 @@ public void collidewith(BaseTank tank) {
 		Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
 		Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
 		if (this.rect1.intersects(tank.rect)) {
-	
 			tank.die();
 			this.die();
 			int ex = tank.getX()+Tank.WIDTH/2 - Explode.WIDTH/2;
 			int ey = tank.getY()+Tank.HEIGHT/2 -Explode.HEIGHT/2;
-			tf.explodes.add(tf.gf.createExplode(ex,ey,tf));
+			tf.explodes.add(new Explode(ex,ey,tf));
 		}
 	
 }

@@ -13,21 +13,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.liuyanqing.tank.abstractfactory.BaseBullet;
-import com.liuyanqing.tank.abstractfactory.BaseExplode;
-import com.liuyanqing.tank.abstractfactory.BaseTank;
-import com.liuyanqing.tank.abstractfactory.DefaultFactory;
-import com.liuyanqing.tank.abstractfactory.GameFactory;
-import com.liuyanqing.tank.abstractfactory.RectFactory;
+
 
 
 
 public class TankFrame extends Frame{
-     Tank  myTank = new Tank(200, 900, Dir.UP,Group.GOOD,this);  
-   public  List<BaseBullet> bullets = new ArrayList<BaseBullet>();
-   public  List<BaseTank>  tanks  = new ArrayList<BaseTank>(); 
-   public  List<BaseExplode> explodes  = new ArrayList<BaseExplode>();
-   public GameFactory gf = RectFactory.getInstance();
+   Tank  myTank = new Tank(200, 900, Dir.UP,Group.GOOD,this);  
+   public  List<Bullet> bullets = new ArrayList<>();
+   public  List<Tank>  tanks  = new ArrayList<>(); 
+   public  List<Explode> explodes  = new ArrayList<>();
+ 
      
 //       Explode e  =  new Explode(100, 100, this);        
 //       Bullet bullet = new Bullet(300,300,Dir.DOWN);
@@ -98,7 +93,6 @@ public class TankFrame extends Frame{
 		
 			for (int j = 0; j < tanks.size(); j++) {
 				bullets.get(i).collidewith(tanks.get(j));
-			
 			}
 		}
 //		爆炸效果
