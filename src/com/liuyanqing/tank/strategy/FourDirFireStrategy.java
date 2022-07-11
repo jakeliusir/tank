@@ -3,8 +3,15 @@ package com.liuyanqing.tank.strategy;
 import com.liuyanqing.tank.Audio;
 import com.liuyanqing.tank.Bullet;
 import com.liuyanqing.tank.Dir;
+import com.liuyanqing.tank.GameModel;
+import com.liuyanqing.tank.GameObject;
 import com.liuyanqing.tank.Group;
 import com.liuyanqing.tank.Tank;
+import com.liuyanqing.tank.decorator.GODecorator;
+import com.liuyanqing.tank.decorator.RectDecorator;
+import com.liuyanqing.tank.decorator.TailDecorator;
+
+import javafx.scene.control.TabPane.TabClosingPolicy;
 
 public class FourDirFireStrategy implements FireStrategy {
 
@@ -15,7 +22,9 @@ public class FourDirFireStrategy implements FireStrategy {
 		
 		 Dir[] dirs = Dir.values();
 		for(Dir dir : dirs) {
-			new Bullet(bx,by,dir,t.group);		
+			
+						  new Bullet(bx,by,dir,t.group);		
+//						   GameModel.getInstance().add(new RectDecorator(new Bullet(bx, by, dir, t.group)));
 		}
 	    
 		if (t.group==Group.GOOD) {

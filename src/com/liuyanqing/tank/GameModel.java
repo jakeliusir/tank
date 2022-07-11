@@ -28,6 +28,7 @@ public class GameModel {
 		// 初始化地方坦克
 		for (int i = 0; i < initTankCount; i++) {
 			new Tank(50 + i * 180, 80, Dir.DOWN, Group.BAD);
+			
 		}
         //初始化墙
 		add(new Wall(150, 150, 200, 50));
