@@ -18,20 +18,20 @@ public class Tank extends GameObject {
 	public Dir dir = Dir.DOWN;
 	private boolean moving = true;
 
-	public GameModel gm;
+
 	private Random random = new Random();
 	FireStrategy fs = null;
 	public Group group = Group.BAD;
-	Rectangle rect = new Rectangle();
+	public Rectangle rect = new Rectangle();
 	int oldx,oldy;
 
-	public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+	public Tank(int x, int y, Dir dir, Group group) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.gm = gm;
+		
 
 		rect.x = this.x;
 		rect.y = this.y;
@@ -52,6 +52,7 @@ public class Tank extends GameObject {
 
 			}
 		}
+		GameModel.getInstance().add(this);
 
 	}
 
@@ -92,6 +93,8 @@ public class Tank extends GameObject {
 	public Group getGroup() {
 		return group;
 	}
+
+
 
 	public Rectangle getRect() {
 		return rect;
@@ -170,7 +173,7 @@ public class Tank extends GameObject {
 //	    x+=10;
 //	    y+=10;	
 		if (!living) {
-			gm.remove(this);
+			GameModel.getInstance().remove(this);
 		}
 		switch (dir) {
 		case LEFT:

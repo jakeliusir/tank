@@ -9,35 +9,45 @@ public class Bullet extends GameObject {
     private static final int SPEED =20;
     public static int WIDTH = ResourceMgr.bulletD.getWidth(),HEIGHT = ResourceMgr.bulletD.getHeight();
 
-     Rectangle rect1  = new Rectangle();
+    public Rectangle rect1  = new Rectangle();
     
 
     private int x , y;
     private Dir dir;
     private boolean living = true; 
 
-    GameModel gm =null;
-     Group group = Group.BAD;
+  
+     public Group group = Group.BAD;
 
     
 	
-	public Bullet(int x, int y, Dir dir,Group group,GameModel gm) {
+	public Rectangle getRect1() {
+		return rect1;
+	}
+
+
+	public void setRect1(Rectangle rect1) {
+		this.rect1 = rect1;
+	}
+
+
+	public Bullet(int x, int y, Dir dir,Group group) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.group =group;
 		this.dir = dir;
-		this.gm =gm;
+		
 		rect1.x = this.x;
 		rect1.y = this.y;
 		rect1.width = WIDTH;
 		rect1.height = HEIGHT;
 		
-		gm.add(this);
+		GameModel.getInstance().add(this);
 	}
 	
 
-	public Group getGroup() {
+	public  Group getGroup() {
 		return group;
 	}
 
@@ -52,7 +62,7 @@ public class Bullet extends GameObject {
 	public void paint(Graphics g) {
 		
 		if(!living) {
-			gm.remove(this);
+			GameModel.getInstance().remove(this);
 		}
 //		Color color = g.getColor();
 //		g.setColor(Color.RED);
@@ -144,34 +154,10 @@ public class Bullet extends GameObject {
 //			tf.explodes.add(tf.gf.createExplode(ex,ey,tf));
 //		}
 //	}
-	private void die() {
+	public void die() {
 	this.living =false;
 		
 	}
-
-
-
-public boolean collidewith(Tank tank) {
-	
-		if(this.group == tank.group) {
-			
-			return false;
-		}
-		Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-		Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
-		if (this.rect1.intersects(tank.rect)) {
-			tank.die();
-			this.die();
-			int ex = tank.getX()+Tank.WIDTH/2 - Explode.WIDTH/2;
-			int ey = tank.getY()+Tank.HEIGHT/2 -Explode.HEIGHT/2;
-			gm.add(new Explode(ex,ey,gm));
-			return true;
-		}
-		return false;
-	
-}
-
-
 
 
 }

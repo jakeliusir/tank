@@ -9,16 +9,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-
-
-
 
 public class TankFrame extends Frame{
-	GameModel gm  =new GameModel();
+//	  GameModel gm  =new GameModel();
       public  static final int GAME_WIDTH=1480,GAME_HEIGHT=800;     
 	    private final int SPEED = 20;	
     	public TankFrame() {
@@ -52,7 +45,7 @@ public class TankFrame extends Frame{
 	}
 	   @Override
 	   public void paint(Graphics g) {
-		   gm.paint(g);
+		   GameModel.getInstance().paint(g);
 		   
 
 	}
@@ -113,7 +106,7 @@ public class TankFrame extends Frame{
 				bD=false;
 				break;
 			case KeyEvent.VK_CONTROL:
-				gm.getMainTank().fire();
+				GameModel.getInstance().getMainTank().fire();
 				break;
 			default:
 				break;
@@ -122,13 +115,13 @@ public class TankFrame extends Frame{
 		}
 		private void setMainTankDir() {
 			//这里加方向键 
-			if(!bL && !bU && !bR && !bD) gm.getMainTank().setMoving(false);
+			if(!bL && !bU && !bR && !bD) GameModel.getInstance().getMainTank().setMoving(false);
 			else {
-				gm.getMainTank().setMoving(true);
-			if (bL)  gm.getMainTank().setDir(Dir.LEFT);
-			if (bR)  gm.getMainTank().setDir(Dir.RIGHT);
-			if (bU)  gm.getMainTank().setDir(Dir.UP);
-			if (bD)  gm.getMainTank().setDir(Dir.DOWN);
+				GameModel.getInstance().getMainTank().setMoving(true);
+			if (bL)  GameModel.getInstance().getMainTank().setDir(Dir.LEFT);
+			if (bR)  GameModel.getInstance().getMainTank().setDir(Dir.RIGHT);
+			if (bU)  GameModel.getInstance().getMainTank().setDir(Dir.UP);
+			if (bD)  GameModel.getInstance().getMainTank().setDir(Dir.DOWN);
 	  }			
 	}
   }
