@@ -19,7 +19,7 @@ public class Bullet extends GameObject {
   
      public Group group = Group.BAD;
 
-    
+    int oldx,oldy;
 	
 	public Rectangle getRect1() {
 		return rect1;
@@ -90,6 +90,8 @@ public class Bullet extends GameObject {
 	}
 
 	private void move() {
+		oldx=x;
+		oldy=y;
 	    switch (dir) {
 			case LEFT:
 				x-=SPEED;
@@ -171,6 +173,13 @@ public class Bullet extends GameObject {
 	public int getHight() {
 		// TODO Auto-generated method stub
 		return HEIGHT;
+	}
+
+
+	public void stop() {
+		x=oldx;
+		y=oldy;
+		
 	}
 
 
