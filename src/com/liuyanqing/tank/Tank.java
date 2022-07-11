@@ -2,10 +2,15 @@ package com.liuyanqing.tank;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import com.liuyanqing.tank.cor.Collider;
 import com.liuyanqing.tank.cor.TankTankCollider;
+import com.liuyanqing.tank.observer.TankEventHandler;
+import com.liuyanqing.tank.observer.TankFireEvent;
+import com.liuyanqing.tank.observer.TankFireObserver;
 import com.liuyanqing.tank.strategy.FireStrategy;
 import com.sun.prism.paint.Stop;
 
@@ -241,6 +246,14 @@ public class Tank extends GameObject {
 	public int getHight() {
 		// TODO Auto-generated method stub
 		return HEIGHT;
+	}
+    private List<TankFireObserver> fireObservers = Arrays.asList(new TankEventHandler());
+	public void handleFireKey() {
+		TankFireEvent event = new TankFireEvent(this);
+		for (TankFireObserver tankFireObserver : fireObservers) {
+			   tankFireObserver.actionOnFire(event);
+		}
+		
 	}
 
 }
