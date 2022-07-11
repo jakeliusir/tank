@@ -7,8 +7,6 @@ import com.liuyanqing.tank.cor.BulletTankCollider;
 import com.liuyanqing.tank.cor.Collider;
 import com.liuyanqing.tank.cor.ColliderChain;
 import com.liuyanqing.tank.cor.TankTankCollider;
-
-
 public class GameModel {
 	private static final GameModel INSTANCE = new GameModel();
     Tank myTank =null;

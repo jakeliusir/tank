@@ -9,7 +9,7 @@ public class Explode extends GameObject  {
     private static final int SPEED =10;
     public static int WIDTH = ResourceMgr.exploses[1].getWidth();
     public static int HEIGHT = ResourceMgr.exploses[1].getHeight();  
-    private int x , y;
+
     private int step = 0;
     boolean living = true; 
    	public Explode(int x, int y) {
@@ -36,6 +36,16 @@ public class Explode extends GameObject  {
 
 
 
+	}
+	@Override
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return WIDTH;
+	}
+	@Override
+	public int getHight() {
+		// TODO Auto-generated method stub
+		return HEIGHT;
 	}
 
 

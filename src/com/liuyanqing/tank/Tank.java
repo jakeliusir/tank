@@ -13,8 +13,7 @@ public class Tank extends GameObject {
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
 	private static final int SPEED = 5;
 	private boolean living = true;
-	public int x;
-	public int y;
+	
 	public Dir dir = Dir.DOWN;
 	private boolean moving = true;
 
@@ -230,6 +229,18 @@ public class Tank extends GameObject {
 //		moving = false;
 	
 		
+	}
+
+	@Override
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return WIDTH;
+	}
+
+	@Override
+	public int getHight() {
+		// TODO Auto-generated method stub
+		return HEIGHT;
 	}
 
 }
