@@ -2,171 +2,160 @@ package com.liuyanqing.tank;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.UUID;
 
-
+import com.liuyanqing.net.Client;
+import com.liuyanqing.net.TankDieMsg;
 
 public class Bullet {
-    private static final int SPEED =20;
-    public static int WIDTH = ResourceMgr.bulletD.getWidth(),HEIGHT = ResourceMgr.bulletD.getHeight();
-
-     Rectangle rect1  = new Rectangle();
-    
-
-    private int x , y;
-    private Dir dir;
-    private boolean living = true; 
-    TankFrame tf  = null;
-    
-     Group group = Group.BAD;
-
-    
+	private static final int SPEED = 6;
 	
-	public Bullet(int x, int y, Dir dir,Group group,TankFrame tf) {
-		super();
+	public static int WIDTH = ResourceMgr.bulletD.getWidth();
+
+	public static int HEIGHT = ResourceMgr.bulletD.getHeight();
+
+	private UUID id = UUID.randomUUID();
+	private UUID playerId;
+
+	Rectangle rect = new Rectangle();
+
+	private int x, y;
+
+	private Dir dir;
+
+	private boolean living = true;
+
+	TankFrame tf = null;
+
+	private Group group = Group.BAD;
+
+	public Bullet(UUID playerId, int x, int y, Dir dir, Group group, TankFrame tf) {
+		this.playerId = playerId;
 		this.x = x;
 		this.y = y;
-		this.group =group;
 		this.dir = dir;
-		this.tf =tf;
-		rect1.x = this.x;
-		rect1.y = this.y;
-		rect1.width = WIDTH;
-		rect1.height = HEIGHT;
+		this.group = group;
+		this.tf = tf;
 		
-		tf.bullets.add(this);
+		rect.x = this.x;
+		rect.y = this.y;
+		rect.width = WIDTH;
+		rect.height = HEIGHT;
+				
 	}
-	
 
+	public void collideWith(Tank tank) {
+		if(this.playerId.equals(tank.getId())) return;
+		//System.out.println("bullet rect:" + this.rect);
+		//System.out.println("tank rect:" + tank.rect);
+		if(this.living && tank.isLiving() && this.rect.intersects(tank.rect)) {
+			tank.die();
+			this.die();
+			Client.INSTANCE.send(new TankDieMsg(this.id, tank.getId()));
+		}
+		
+	}
+
+	public void die() {
+		this.living = false;
+	}
+
+	public Dir getDir() {
+		return dir;
+	}
 	public Group getGroup() {
 		return group;
 	}
-
-
-
+	public UUID getId() {
+		return id;
+	}
+	
+	public UUID getPlayerId() {
+		return playerId;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
+	
+	public boolean isLiving() {
+		return living;
+	}
+	private void move() {
+		
+		switch (dir) {
+		case LEFT:
+			x -= SPEED;
+			break;
+		case UP:
+			y -= SPEED;
+			break;
+		case RIGHT:
+			x += SPEED;
+			break;
+		case DOWN:
+			y += SPEED;
+			break;
+		}
+		
+		//update rect
+		rect.x = this.x;
+		rect.y = this.y;
+		
+		if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) living = false;
+		
+	}
+	public void paint(Graphics g) {
+		if(!living) {
+			tf.bullets.remove(this);
+		}
+		
+		switch(dir) {
+		case LEFT:
+			g.drawImage(ResourceMgr.bulletL, x, y, null);
+			break;
+		case UP:
+			g.drawImage(ResourceMgr.bulletU, x, y, null);
+			break;
+		case RIGHT:
+			g.drawImage(ResourceMgr.bulletR, x, y, null);
+			break;
+		case DOWN:
+			g.drawImage(ResourceMgr.bulletD, x, y, null);
+			break;
+		}
+		
+		move();
+	}
+	
+	public void setDir(Dir dir) {
+		this.dir = dir;
+	}
+	
 	public void setGroup(Group group) {
 		this.group = group;
 	}
 
-
-
-	public void paint(Graphics g) {
-		
-		if(!living) {
-			tf.bullets.remove(this);
-		}
-//		Color color = g.getColor();
-//		g.setColor(Color.RED);
-//		g.fillOval(x, y, WIDTH, HEIGHT);//绘制了一个黑块
-//	    x+=10;
-//	    y+=10;	
-		switch (dir) {
-		case LEFT:
-			g.drawImage(ResourceMgr.bulletL,x,y,null);
-			break;
-		case RIGHT:
-			g.drawImage(ResourceMgr.bulletR,x,y,null);
-			break;
-		case UP:
-			g.drawImage(ResourceMgr.bulletU,x,y,null);
-			break;
-		case DOWN:
-			g.drawImage(ResourceMgr.bulletD,x,y,null);
-			break;
-
-		default:
-			break;
-		}	
-		move();
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
-	private void move() {
-	    switch (dir) {
-			case LEFT:
-				x-=SPEED;
-				break;
-			case RIGHT:
-				x+=SPEED;
-				break;
-			case UP:
-				y-=SPEED;
-				break;
-			case DOWN:
-				y+=SPEED;
-				break;
+	public void setLiving(boolean living) {
+		this.living = living;
 	}
-		//更新rect
-		rect1.x = this.x;
-		rect1.y = this.y;
-	    
-		if(x<0 || y<0 || x> TankFrame.GAME_WIDTH || y> TankFrame.GAME_HEIGHT) living = false;
-		
-	}
-//	public void collidewith(BaseTank tank) {
-//		if (this.group == tank.getGroup()) {
-//			return;
-//		}
-//		碰撞时候产生多个rect对象。垃圾收集器回收会积累的特别多才能释放，采用一个初始化Rect
-//		CodeReview and refactorning
-//		TODO 用一个rect 来记录子弹位置
-//		Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-//		Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
-		
-//	    if (this.rect.intersects(tank.rect)) {
-//	    
-//			tank.die();
-//		    this.die(); 
-//			int ex = tank.getX()+Tank.WIDTH/2-Explode.WIDTH/2;
-//			int ey = tank.getY()+Tank.HEIGHT/2-Explode.HEIGHT/2;
-//		    tf.explodes.add(tf.gf.createExplode(ex, ey, tf));
-		
-//		   new Thread(()->{
-//			   this.explode = true;
-//			   System.out.println(rect1);
-//			    
-//		   }).start(); 
-//		}	
-//	}
 	
-	//判断炮弹是否击中坦克
-//	public void collidewith(BaseTank tank1) {
-//    System.out.println("开始判断");		
-//		if(this.group == tank1.group) {
-//			 System.out.println("判断结束");	
-//			return;
-//		}
-//		
-//		if (this.rect.intersects(tank1.rect)) {
-//			System.out.println("开始判断1");		
-//			tank1.die();
-//			this.die();
-//			int ex = tank1.getX()+Tank.WIDTH/2 - Explode.WIDTH/2;
-//			int ey = tank1.getY()+Tank.HEIGHT/2 -Explode.HEIGHT/2;
-//			tf.explodes.add(tf.gf.createExplode(ex,ey,tf));
-//		}
-//	}
-	private void die() {
-	this.living =false;
-		
+	public void setPlayerId(UUID playerId) {
+		this.playerId = playerId;
 	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
 
-
-public void collidewith(Tank tank) {
-	
-		if(this.group == tank.group) {
-			
-			return;
-		}
-		Rectangle rect1 = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-		Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
-		if (this.rect1.intersects(tank.rect)) {
-			tank.die();
-			this.die();
-			int ex = tank.getX()+Tank.WIDTH/2 - Explode.WIDTH/2;
-			int ey = tank.getY()+Tank.HEIGHT/2 -Explode.HEIGHT/2;
-			tf.explodes.add(new Explode(ex,ey,tf));
-		}
-	
-}
-
+	public void setY(int y) {
+		this.y = y;
+	}
 }

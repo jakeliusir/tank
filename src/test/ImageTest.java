@@ -1,6 +1,6 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,29 +10,21 @@ import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Test;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 class ImageTest {
 
 	@Test
 	void test() {
-		BufferedImage image;
+		
 		try {
-//			image = ImageIO.read(new File("D:/liu.jpg"));
-//			assertNotNull(image);
-			//ImageTest.class=>this.getClass
-			BufferedImage image2 = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/tankL.gif"));
-			assertNotNull(image2);
-			System.out.println(image2);
+			BufferedImage image = ImageIO.read(new File("C:/work/javaprojects/Tank_60/src/images/bulletD.gif"));
+			assertNotNull(image);
 			
+			BufferedImage image2 = ImageIO.read(ImageTest.class.getClassLoader().getResourceAsStream("images/bulletD.gif"));
+			//this.getClass()
+			assertNotNull(image2);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-}
-		
-	
-	
+	}
 
 }
